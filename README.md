@@ -12,5 +12,5 @@ Usage
 
 3. Use 'make menuconfig' to select subconverter package.
 
-4. You may use 'make package/subconvertre/compile V=99' to
+4. You may use 'make package/subconverter/compile V=99' to
    compile subconverter and its dependencies.
