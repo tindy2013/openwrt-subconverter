@@ -3,7 +3,7 @@
 Usage
 ---
 
-1. Copy these folders to <openwrt-source-tree>/package.
+1. Copy these folders to ```<openwrt-source-tree>/package```.
 
 2. Install feeds from openwrt official package repository.
 
