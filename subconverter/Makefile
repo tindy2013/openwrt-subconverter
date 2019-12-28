@@ -16,7 +16,7 @@ PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=914c8e9fbbebe428bead74885c38f369ef95ce11
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 CMAKE_INSTALL:=1
-PKG_BUILD_PARALLEL:=0
+PKG_BUILD_PARALLEL:=1
 
 PKG_BUILD_DEPENDS:=+libevent2 +libyaml-cpp +libcurl +openssl1.1
 
@@ -57,7 +57,7 @@ define Package/subconverter
 	TITLE:=Utility to convert between various subscription format.
 	URL:=https://github.com/tindy2013/subconverter
 	DEPENDS:=+libpthread +libstdcpp \
-		+libevent2 +libyaml-cpp +libcurl +openssl1.1
+		+libevent2 +libyaml-cpp +libcurl +libopenssl
 endef
 
 
