@@ -7,18 +7,18 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=subconverter
-PKG_VERSION:=0.2.7
+PKG_VERSION:=0.4.1
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/tindy2013/subconverter.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=1a54f7c5002e7ed4461106d74488dc92ee0ffd34
+PKG_SOURCE_VERSION:=844c68df9aaf68685922f0e444a36931de9604a2
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 CMAKE_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:=+libevent2 +libyaml-cpp +libcurl +openssl1.1
+PKG_BUILD_DEPENDS:=libevent2 libyaml-cpp curl libpcre2 mbedtls rapidjson
 
 PKG_LICENSE:=GPL-3.0
 
@@ -38,17 +38,12 @@ TARGET_LDFLAGS += -flto
 TARGET_CXXFLAGS += -std=c++17
 
 TARGET_CXXFLAGS := $(filter-out -O%,$(TARGET_CXXFLAGS)) -O3
-MY_OPENSSL_DIR:=$(BUILD_DIR)/openssl1.1_staging_dir/usr
 
 TARGET_CXXFLAGS += -ffunction-sections -fdata-sections
 TARGET_LDFLAGS += -Wl,--gc-sections
 
-CMAKE_FIND_ROOT_PATH := $(MY_OPENSSL_DIR);$(CMAKE_FIND_ROOT_PATH)
-TARGET_CXXFLAGS := -I$(MY_OPENSSL_DIR)/include $(TARGET_CXXFLAGS)
-TARGET_LDFLAGS := -L$(MY_OPENSSL_DIR)/lib $(TARGET_LDFLAGS)
-
 CMAKE_OPTIONS += \
-	-DUSING_STD_REGEX=ON \
+    -DUSING_MBEDTLS=ON \
 	-DUSING_MALLOC_TRIM=ON
 
 define Package/subconverter
@@ -57,7 +52,7 @@ define Package/subconverter
 	TITLE:=Utility to convert between various subscription format.
 	URL:=https://github.com/tindy2013/subconverter
 	DEPENDS:=+libpthread +libstdcpp \
-		+libevent2 +libyaml-cpp +libcurl +libopenssl
+		+libevent2 +libyaml-cpp +libcurl +libpcre2 +libmbedtls
 endef
 
 
