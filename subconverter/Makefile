@@ -18,7 +18,13 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
 CMAKE_INSTALL:=1
 PKG_BUILD_PARALLEL:=1
 
-PKG_BUILD_DEPENDS:=libevent2 libyaml-cpp curl libpcre2 mbedtls rapidjson
+PKG_CONFIG_DEPENDS:= \
+  CONFIG_SUBCONVERTER_OPENSSL \
+  CONFIG_SUBCONVERTER_MBEDTLS \
+  CONFIG_SUBCONVERTER_STDREGEX \
+  CONFIG_SUBCONVERTER_PCRE2
+
+PKG_BUILD_DEPENDS:=libevent2 libyaml-cpp curl rapidjson SUBCONVERTER_OPENSSL:openssl SUBCONVERTER_MBEDTLS:mbedtls SUBCONVERTER_PCRE2:pcre2
 
 PKG_LICENSE:=GPL-3.0
 
@@ -43,8 +49,9 @@ TARGET_CXXFLAGS += -ffunction-sections -fdata-sections
 TARGET_LDFLAGS += -Wl,--gc-sections
 
 CMAKE_OPTIONS += \
-    -DUSING_MBEDTLS=ON \
-	-DUSING_MALLOC_TRIM=ON
+	$(if $(CONFIG_SUBCONVERTER_STDREGEX),-DUSING_STD_REGEX=ON,) \
+	$(if $(CONFIG_SUBCONVERTER_MBEDTLS),-DUSING_MBEDTLS=ON,) \
+#	-DUSING_MALLOC_TRIM=ON
 
 define Package/subconverter
 	SECTION:=net
@@ -52,10 +59,12 @@ define Package/subconverter
 	TITLE:=Utility to convert between various subscription format.
 	URL:=https://github.com/tindy2013/subconverter
 	DEPENDS:=+libpthread +libstdcpp \
-		+libevent2 +libyaml-cpp +libcurl +libpcre2 +libmbedtls
+		+libevent2 +libyaml-cpp +libcurl +SUBCONVERTER_PCRE2:libpcre2 +SUBCONVERTER_OPENSSL:libopenssl +SUBCONVERTER_MBEDTLS:libmbedtls
 endef
 
-
+define Package/subconverter/config
+  source "$(SOURCE)/Config.in"
+endef
 
 define Package/subconverter/install
 	$(INSTALL_DIR) $(1)/usr/sbin/subconverter

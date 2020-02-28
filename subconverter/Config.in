@@ -1,0 +1,27 @@
+if PACKAGE_subconverter
+
+choice
+	prompt "SSL Library"
+	default SUBCONVERTER_OPENSSL
+
+	config SUBCONVERTER_OPENSSL
+		bool "OpenSSL"
+
+	config SUBCONVERTER_MBEDTLS
+		bool "mbedTLS"
+
+endchoice
+
+choice
+	prompt "RegEx Library"
+	default SUBCONVERTER_PCRE2
+
+	config SUBCONVERTER_STDREGEX
+		bool "STD RegEx"
+
+	config SUBCONVERTER_PCRE2
+		bool "libpcre2"
+
+endchoice
+
+endif
