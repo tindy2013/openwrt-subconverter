@@ -67,6 +67,8 @@ define Package/subconverter/config
 endef
 
 define Package/subconverter/install
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/subconverter.init $(1)/etc/init.d/subconverter
 	$(INSTALL_DIR) $(1)/usr/sbin/subconverter
 	$(INSTALL_BIN) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/subconverter $(1)/usr/sbin/subconverter
 	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/base/* $(1)/usr/sbin/subconverter

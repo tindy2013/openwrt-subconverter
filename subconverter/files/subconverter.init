@@ -1,0 +1,26 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+SERVICE_WRITE_PID=1
+SERVICE_DAEMONIZE=1
+
+start() {
+	logger -t Subconverter 'Starting Subconverter service'
+	service_start /usr/sbin/subconverter/subconverter
+	return 0
+}
+
+stop() {
+	if [ -n "`pidof subconverter`" ]; then
+		logger -t Subconverter 'Shutting down Subconverter service'
+		service_stop /usr/sbin/subconverter/subconverter
+	fi
+	return 0
+}
+
+restart() {
+	logger -t Subconverter 'Restarting Subconverter service'
+	stop
+	sleep 2
+	start
+}
