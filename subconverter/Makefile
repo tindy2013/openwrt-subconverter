@@ -1,78 +1,57 @@
 #
-# Copyright (C) 2019-2020 XTindy
+# Copyright (C) 2019 OpenWrt.org
 #
-# This is free software, licensed under the GNU General Public License v3.
+# This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
 #
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=subconverter
-PKG_VERSION:=0.5.1
+PKG_VERSION:=0.6.3
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/tindy2013/subconverter.git
+PKG_SOURCE_VERSION:=66f6c6f528bd933b3e82214649fa2d318b8f5a38
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
-PKG_SOURCE_VERSION:=3e3f22d8f946909f2b7f6730b20acdbcc127cf5e
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
-CMAKE_INSTALL:=1
+
+PKG_LICENSE:=GPLv3
+PKG_LICENSE_FILES:=LICENSE
+PKG_MAINTAINER:=[CTCGFW]Project OpenWrt
+
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+PKG_INSTALL:=1
+PKG_FIXUP:=autoreconf
+PKG_USE_MIPS16:=0
 PKG_BUILD_PARALLEL:=1
-
-PKG_CONFIG_DEPENDS:= \
-  CONFIG_SUBCONVERTER_OPENSSL \
-  CONFIG_SUBCONVERTER_MBEDTLS \
-  CONFIG_SUBCONVERTER_STDREGEX \
-  CONFIG_SUBCONVERTER_PCRE2
-
-PKG_BUILD_DEPENDS:=libevent2 libyaml-cpp curl rapidjson SUBCONVERTER_OPENSSL:openssl SUBCONVERTER_MBEDTLS:mbedtls SUBCONVERTER_PCRE2:pcre2
-
-PKG_LICENSE:=GPL-3.0
-
-PKG_MAINTAINER:=XTindy
+PKG_BUILD_DEPENDS:=duktape jpcre2 rapidjson
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-TARGET_CXXFLAGS += -Wall -Wextra
-TARGET_CXXFLAGS += $(FPIC)
-
-# LTO
-TARGET_CXXFLAGS += -flto
-TARGET_LDFLAGS += -flto
-
-# CXX standard
-TARGET_CXXFLAGS += -std=c++17
-
-TARGET_CXXFLAGS := $(filter-out -O%,$(TARGET_CXXFLAGS)) -O3
-
-TARGET_CXXFLAGS += -ffunction-sections -fdata-sections
-TARGET_LDFLAGS += -Wl,--gc-sections
-
-CMAKE_OPTIONS += \
-	$(if $(CONFIG_SUBCONVERTER_STDREGEX),-DUSING_STD_REGEX=ON,) \
-	$(if $(CONFIG_SUBCONVERTER_MBEDTLS),-DUSING_MBEDTLS=ON,) \
-#	-DUSING_MALLOC_TRIM=ON
-
-define Package/subconverter
-	SECTION:=net
-	CATEGORY:=Network
+define Package/$(PKG_NAME)
+	SECTION:=utils
+	CATEGORY:=Utilities
 	TITLE:=Utility to convert between various subscription format.
 	URL:=https://github.com/tindy2013/subconverter
-	DEPENDS:=+libpthread +libstdcpp \
-		+libevent2 +libyaml-cpp +libcurl +SUBCONVERTER_PCRE2:libpcre2 +SUBCONVERTER_OPENSSL:libopenssl +SUBCONVERTER_MBEDTLS:libmbedtls
+	DEPENDS:=+libpthread +libstdcpp +libevent2 +libyaml-cpp +libpcre2 +libcurl +zlib
 endef
 
-define Package/subconverter/config
-  source "$(SOURCE)/Config.in"
+define Package/$(PKG_NAME)/description
+	Utility to convert between various subscription format.
 endef
 
-define Package/subconverter/install
+CMAKE_OPTIONS += -DCMAKE_BUILD_TYPE=Release
+
+define Package/$(PKG_NAME)/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/subconverter $(1)/usr/bin/subconverter
+	$(INSTALL_DIR) $(1)/etc/subconverter
+	$(CP) $(PKG_BUILD_DIR)/base/* $(1)/etc/subconverter/
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/subconverter.init $(1)/etc/init.d/subconverter
-	$(INSTALL_DIR) $(1)/usr/sbin/subconverter
-	$(INSTALL_BIN) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/subconverter $(1)/usr/sbin/subconverter
-	$(CP) $(BUILD_DIR)/${PKG_SOURCE_SUBDIR}/base/* $(1)/usr/sbin/subconverter
 endef
 
-
-$(eval $(call BuildPackage,subconverter))
+$(eval $(call BuildPackage,$(PKG_NAME)))
