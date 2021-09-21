@@ -20,7 +20,7 @@ PKG_LICENSE:=GPL-3.0
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
-PKG_BUILD_DEPENDS:=jpcre2 libcron quickjspp rapidjson
+PKG_BUILD_DEPENDS:=jpcre2 libcron quickjspp rapidjson toml11
 PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/package.mk
