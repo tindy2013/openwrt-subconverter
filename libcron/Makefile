@@ -5,14 +5,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libcron
-PKG_VERSION:=1.3.0
+PKG_VERSION:=1.4.0
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/PerMalmberg/libcron.git
-PKG_SOURCE_DATE:=2020-12-04
-PKG_SOURCE_VERSION:=b0046755bda166dde253e33f68a5b0a1c3ed387e
-PKG_MIRROR_HASH:=04ed111a5b15b713fc51ca728f5c2cbe386a5bff642a3b3e1b928b695f6cec2f
+PKG_SOURCE_DATE:=2021-08-24
+PKG_SOURCE_VERSION:=e91a51afc1d3e0ef2de8849e6c7bd84dd45d0ad9
+PKG_MIRROR_HASH:=e4e3f945aebdbee7ff4457399cd21241922c7de658733e94b85ca98a0f5b5a94
 
 PKG_LICENSE:=MIT
 PKG_LICENSE_FILES:=LICENSE
@@ -24,14 +24,14 @@ CMAKE_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/libcron
+define Package/$(PKG_NAME)
   SECTION:=lib
   CATEGORY:=Libraries
   URL:=https://github.com/PerMalmberg/libcron
   TITLE:=A C++ scheduling library using cron formatting
 endef
 
-define Package/libcron/description
+define Package/$(PKG_NAME)/description
   Libcron offers an easy to use API to add callbacks with corresponding cron-formatted strings.
 endef
 
@@ -43,4 +43,4 @@ define Build/Install
 	$(CP) $(PKG_BUILD_DIR)/libcron/externals/date/include/* $(PKG_INSTALL_DIR)/usr/include/
 endef
 
-$(eval $(call BuildPackage,libcron))
+$(eval $(call BuildPackage,$(PKG_NAME)))

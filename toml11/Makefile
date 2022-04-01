@@ -21,16 +21,16 @@ CMAKE_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/toml11
+define Package/$(PKG_NAME)
   SECTION:=lib
   CATEGORY:=Libraries
   TITLE:=C++11 header-only toml parser/encoder
   URL:=https://github.com/ToruNiina/toml11
 endef
 
-define Package/toml11/description
+define Package/$(PKG_NAME)/description
   toml11 is a C++11 (or later) header-only toml parser/encoder
   depending only on C++ standard library.
 endef
 
-$(eval $(call BuildPackage,toml11))
+$(eval $(call BuildPackage,$(PKG_NAME)))

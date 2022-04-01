@@ -1,0 +1,25 @@
+From bf320ea436f8fff5eefc998fec6ac7c63e30cc69 Mon Sep 17 00:00:00 2001
+From: W_Y_CPP <383152993@qq.com>
+Date: Sun, 26 Dec 2021 17:25:24 +0900
+Subject: [PATCH] fix std namespace
+
+---
+ test/conversions.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/conversions.cpp b/test/conversions.cpp
+index 0b2c782..7e014cc 100644
+--- a/test/conversions.cpp
++++ b/test/conversions.cpp
+@@ -2,7 +2,7 @@
+ #include <iostream>
+ #include <numeric>
+ #include <limits>
+-
++#include <stdexcept>
+ template <typename T>
+ void test_conv(qjs::Context& context, T x)
+ {
+-- 
+2.17.1
+

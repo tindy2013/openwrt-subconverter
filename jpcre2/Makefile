@@ -22,14 +22,14 @@ PKG_INSTALL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/jpcre2
+define Package/$(PKG_NAME)
   SECTION:=lib
   CATEGORY:=Libraries
   TITLE:=C++ wrapper for PCRE2 Library
   URL:=https://github.com/jpcre2/jpcre2
 endef
 
-define Package/jpcre2/description
+define Package/$(PKG_NAME)/description
   This provides some C++ wrapper classes/functions to perform regex
   operations such as regex match and regex replace.
 endef
@@ -39,4 +39,4 @@ define Build/InstallDev
 	$(CP) $(PKG_INSTALL_DIR)/usr/include/jpcre2.hpp $(1)/usr/include/jpcre2.hpp
 endef
 
-$(eval $(call BuildPackage,jpcre2))
+$(eval $(call BuildPackage,$(PKG_NAME)))

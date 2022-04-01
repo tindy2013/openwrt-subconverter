@@ -9,9 +9,9 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/ftk/quickjspp.git
-PKG_SOURCE_DATE:=2021-04-13
-PKG_SOURCE_VERSION:=25037f37a02277ed8a8a0f4d61bac174254bf7b6
-PKG_MIRROR_HASH:=6a914acdaf31c2ed0adef3f36646105df4333355dd7c254d9590b0c11fee469e
+PKG_SOURCE_DATE:=2021-12-05
+PKG_SOURCE_VERSION:=b23a60a96219eb3fdba281b8a73ac6fa22df1704
+PKG_MIRROR_HASH:=9d152fd401f3eca406597cc40b63758bf32bb7c42a4f4e0385725426d6b43710
 
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
@@ -21,7 +21,7 @@ CMAKE_INSTALL:=1
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/quickjspp
+define Package/$(PKG_NAME)
   SECTION:=lib
   CATEGORY:=Libraries
   URL:=https://github.com/ftk/quickjspp
@@ -30,7 +30,7 @@ define Package/quickjspp
   PROVIDES:=quickjs
 endef
 
-define Package/quickjspp/description
+define Package/$(PKG_NAME)/description
   QuickJSPP is QuickJS wrapper for C++. It allows you to easily embed
   Javascript engine into your program.
 endef
@@ -43,4 +43,4 @@ define Build/Install
 	$(CP) $(PKG_BUILD_DIR)/quickjs/quickjs*.h $(PKG_INSTALL_DIR)/usr/include/quickjs/
 endef
 
-$(eval $(call BuildPackage,quickjspp))
+$(eval $(call BuildPackage,$(PKG_NAME)))
